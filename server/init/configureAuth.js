@@ -23,7 +23,7 @@ const configureAuth = {
              server.auth.strategy('jwt', 'jwt',
              {
                  key: process.env.KEY,
-                 validateFunc: validate,
+                 validate,
                  verifyOptions: { algorithms: ['HS256'] }
              });
 

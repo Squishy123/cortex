@@ -12,6 +12,31 @@ const userModel = new mongoose.Schema({
     groups: [{group_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Group' }, roles: [String]}]
 });
 
+
+/**
+ * Adds the hashed password to the password field of a user object
+ * @param {String} password 
+ */
+userModel.methods.addHashedPassword = async function(password) {
+    hashed = await new Promise((resolve, reject) => {
+        bcrypt.genSalt(10, (err, salt) => {
+            if (err) reject(err)
+            bcrypt.hash(password, salt, (err, hash) => {
+                if (err) reject(err);
+                resolve(hash);
+            });
+        });
+    });
+    this.password=hashed;
+}
+
+/**
+ * Creates a jwt access_token and returns it
+ */
+userModel.methods.createAccessToken = async function() {
+    return await jwt.sign({user_id: this._id, username: this.username}, process.env.SECRET, {algorithm: 'HS256', expiresIn: "1h"});   
+}
+
 /**
  * Given a jwt access token, if the token is valid, return the user, if not then null
  * @param {JWT} accessToken 
@@ -64,15 +89,15 @@ userModel.statics.verifyCredentials = async function(username, email, password) 
             ]
         });
         if(!user) 
-            return {user: null, verified: false, message: "incorrect username or password"};
+            return {user: null, credentials: false, message: "incorrect username or password"};
         
         let valid = await bcrypt.compare(password, user.password);
         
         //return null if the user does not exist or if credentials are wrong
         if (!valid)
-            return {user: null, verified: false, message: "incorrect password"};
+            return {user: null, credentials: false, message: "incorrect password"};
         //return the user if the user credentials are correct
-        return {user: user, verified: true, message: "success"};
+        return {user: user, credentials: true, message: "success"};
     } catch (err) {
         //return err if something goes wrong
         return err;
