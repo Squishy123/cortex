@@ -28,6 +28,7 @@ groupModel.method.createShareToken = async function (scopes) {
  */
 groupModel.method.addUser = async function (user, scopes) {
     this.users.push({ user_id: user._id, scopes: scopes });
+    await this.save()
 }
 
 groupModel.statics.verifyShareToken = async function (shareToken) {
@@ -43,7 +44,7 @@ groupModel.statics.verifyShareToken = async function (shareToken) {
         //if the group is null
         if(!group)
             return {group: group, share_token: false, message: "Share token is invalid"};
-
+        
         return {group: group,  share_token: true, message: "Success"};
     } catch(err) {
         return err;
