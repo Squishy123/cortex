@@ -9,7 +9,7 @@ const userModel = new mongoose.Schema({
     username: { type: String, required: true, index: { unique: true } },
     email: { type: String, required: true, index: { unique: true } },
     password: { type: String, required: true },
-    groups: [{group_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Group' }, roles: [String]}]
+    groups: [{group_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Group' }, scopes: [String]}]
 });
 
 
@@ -43,7 +43,7 @@ userModel.methods.createAccessToken = async function() {
  */
 userModel.statics.verifyAccessToken = async function(accessToken) {
     try {
-        let decoded = await jwt.decode(accessToken, process.env.SECRET);
+        let decoded = await jwt.verify(accessToken, process.env.SECRET);
         let user = await this.findOne(mongoose.Types.ObjectId(decoded.user_id));
         if(!user) 
             return {user: user, access_token: false, message: "Invalid access token"};

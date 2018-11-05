@@ -17,7 +17,7 @@ const groupModel = new mongoose.Schema({
  * Creates a share token based on the scope
  * @param {enum ["owner", "edit", "view"]} scopes 
  */
-groupModel.method.createShareToken = async function (scopes) {
+groupModel.methods.createShareToken = async function (scopes) {
     return await jwt.sign({ group_id: this._id, secret_id: this.secret_id, scopes: scopes });
 }
 
@@ -26,11 +26,28 @@ groupModel.method.createShareToken = async function (scopes) {
  * @param {User} user 
  * @param {enum ["owner", "edit", "view"]} scopes 
  */
-groupModel.method.addUser = async function (user, scopes) {
+groupModel.methods.addUser = async function (user, scopes) {
     this.users.push({ user_id: user._id, scopes: scopes });
     await this.save()
 }
 
+/**
+ * Verifies the access control of a user
+ * @param {User} user 
+ */
+groupModel.methods.verifyGroupAccess = async function(user) {
+    let verified = this.users.some((u) => {
+        if(u.user_id.equals(user._id))
+            return {user: user, scopes: u.scopes};
+    });
+
+    return verified;
+}
+
+/**
+ * Verifies if  a share token is valid
+ * @param {JWT} shareToken 
+ */
 groupModel.statics.verifyShareToken = async function (shareToken) {
     try {
         let decoded = await jwt.decode(shareToken, process.env.SECRET);
