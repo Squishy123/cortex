@@ -45,8 +45,9 @@ userModel.statics.verifyAccessToken = async function(accessToken) {
     try {
         let decoded = await jwt.decode(accessToken, process.env.SECRET);
         let user = await this.findOne(mongoose.Types.ObjectId(decoded.user_id));
-        
-        return {user: user, verified: true};
+        if(!user) 
+            return {user: user, access_token: false, message: "Invalid access token"};
+        return {user: user, access_token: true, message: "Success"};
     } catch (err) {
         return err;
     }

@@ -44,15 +44,19 @@ async function verifyCredentials(req, h) {
     }
 }
 
+/**
+ * Checks to see if a user's access token is valid
+ * If yes return the user, if not return error
+ * @param {Request} req 
+ * @param {Handler} h 
+ */
 async function verifyAccessToken(req, h) {
     try {
-        let decoded = await jwt.verify(req.headers.access_token, process.env.SECRET);
-        let user = await User.findOne(mongoose.Types.ObjectId(decoded.id));
+        let verified = await User.verifyAccessToken(req.headers.access_token);
+        if (!verified.access_token)
+            return Boom.badRequest(verified.message)
 
-        if (!user)
-            return Boom.badRequest('User does not exist!')
-
-        return user;
+        return verified.user;
 
     } catch (err) {
         return Boom.badRequest(err);
