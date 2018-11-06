@@ -68,4 +68,9 @@ groupModel.statics.verifyShareToken = async function (shareToken) {
     }
 }
 
+
+groupModel.statics.findByUserId = async function(user_id) {
+
+}
+
 module.exports = mongoose.model('Group', groupModel);

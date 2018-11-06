@@ -2,6 +2,8 @@ const Boom = require('boom');
 
 const Group = require('../model/group');
 
+const mongoose = require('mongoose');
+
 const verifyAccessToken = require('../../users/util/userFunctions').verifyAccessToken;
 
 
@@ -13,7 +15,10 @@ module.exports = {
         pre: [{ method: verifyAccessToken , assign: 'user'}],
         handler: async(req, h) => {
             try  {
-                return req.pre.user.groups;
+                let groups = await Group.find({"users.user_id": req.pre.user._id});
+                if(!groups)
+                    return Boom.badRequest("User is not part of any group")
+                return groups;
             } catch(err) {
                 return Boom.badRequest(err);
             }

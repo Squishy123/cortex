@@ -5,6 +5,7 @@ const Group = require('../model/group');
 const verifyAccessToken = require('../../users/util/userFunctions').verifyAccessToken;
 
 
+///create a new group for a user
 module.exports = {
     method: 'POST',
     path: '/api/groups',
@@ -20,7 +21,7 @@ module.exports = {
 
                 req.pre.user.groups.push({ group_id: group._id, scopes: ["owner", "edit", "view"] });
                 await req.pre.user.save();
-                
+
                 await group.save();
 
                 return group;
