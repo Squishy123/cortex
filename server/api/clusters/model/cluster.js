@@ -14,7 +14,7 @@ const clusterModel = new mongoose.Schema({
 /**
  * Generates an API token for this cluster for node access
  */
-clusterModel.method.createAPIToken = async function() {
+clusterModel.methods.createAPIToken = async function() {
     try {
         this.api_token = Math.random().toString(36).slice(2);
         await this.save();
@@ -29,7 +29,7 @@ clusterModel.method.createAPIToken = async function() {
  * Adds a node to the cluster
  * @param {Node} node 
  */
-clusterModel.method.addNode = async function(node) {
+clusterModel.methods.addNode = async function(node) {
     this.nodes.push({node_id: node._id});
     await this.save();
     node.cluster_id = this._id;

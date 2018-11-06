@@ -9,21 +9,16 @@ const verifyAccessToken = require('../../users/util/userFunctions').verifyAccess
 const verifyGroupAccess = require('../../groups/util/groupFunctions').verifyGroupAccess;
 
 module.exports = {
-    method: 'POST',
-    path: '/api/clusters',
+    method: 'GET',
+    path: '/api/cluster',
     config: {
         pre: [{ method: verifyAccessToken, assign: 'user' }, { method: verifyGroupAccess, assign: 'group' }],
         handler: async (req, h) => {
             try {
-                let cluster = new Cluster();
-                cluster.name = req.payload.name;
-                cluster.description = req.payload.description;
-                cluster.group_id = mongoose.Types.ObjectId(req.payload.group_id);
-                await cluster.createAPIToken();
-                await cluster.save();
-                req.pre.group.clusters.push({ cluster_id: cluster._id });
-                await req.pre.group.save();
-
+                let cluster = await Cluster.findOne({ _id: req.headers.cluster_id });
+                if(!cluster)
+                    return Boom.badRequest("Invalid cluster_id");
+                
                 return cluster;
             } catch (err) {
                 return Boom.badRequest(err);
