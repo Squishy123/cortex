@@ -31,7 +31,7 @@ async function verifyShareToken(req, h) {
 async function verifyGroupAccess(req, h) {
     try {
         let user = req.pre.user;
-        let group = await Group.findOne({_id: mongoose.Types.ObjectId(req.headers.group_id)});
+        let group = await Group.findOne({_id: mongoose.Types.ObjectId((req.headers.group_id) ? req.headers.group_id : req.payload.group_id)});
 
         if(!group)
             return Boom.badRequest("Invalid group_id");

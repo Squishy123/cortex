@@ -19,7 +19,7 @@ clusterModel.method.createAPIToken = async function() {
         this.api_token = Math.random().toString(36).slice(2);
         await this.save();
         
-        return {cluster: cluster: api_token: this.api_token, message: "Success"};
+        return {cluster: cluster, api_token: this.api_token, message: "Success"};
     } catch(err) {
         return err;
     }
