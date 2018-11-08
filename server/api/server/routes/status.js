@@ -1,10 +1,10 @@
+const express = require('express');
+const router = express.Router();
+
+//returns the server status
 module.exports = {
-    method: 'GET',
     path: '/api',
-    config: {
-        //find all the users, deselect password and version and return it
-        handler:  (req, h) => {
-            return {status: "Cortex is online!"}
-        }
-    }
+    router: router.get('/', (req, res) => {
+        return res.send({ status: "Cortex is online!" });
+    })
 }

@@ -14,15 +14,15 @@ const jwt = require('jsonwebtoken');
  * @param {Request} req 
  * @param {Handler} h 
  */
-async function verifyUniqueUser(req, h) {
+async function verifyUniqueUser(req, res) {
     try {
         let verified = await User.verifyUniqueUser(req.payload.username, req.payload.email);
         if (!verified.unique)
-            return Boom.badRequest(verified.message);
+            return res.send(Boom.badRequest(verified.message));
 
-        return verified.user;
+        return res.send(verified.user);
     } catch (err) {
-        return Boom.badRequest(err);
+        return res.send(Boom.badRequest(err));
     }
 }
 

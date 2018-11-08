@@ -26,11 +26,10 @@ const init = async () => {
     //start server
     await server.listen(3000 || process.env.PORT, 'localhost' || process.env.HOST);
     console.log(`Cortex Server running at: ${ 'localhost' || process.env.HOST}:${3000 || process.env.PORT}`);
-}
 
-process.on('unhandledRejection', (err) => {
-    console.log(err);
-    process.exit(1);
-});
+    //tester routes
+    const status = require('./api/server/routes/status');
+    server.use(status.path, status.router);
+}
 
 init();
