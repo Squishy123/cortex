@@ -1,16 +1,13 @@
 //imports
 const glob = require('glob');
-const Hapi = require('hapi');
+const express = require('express');
 const path = require('path');
 
 //env vars
 require('dotenv').config();
 
 //server conf
-const server = Hapi.Server({
-    host: 'localhost' || process.env.HOST,
-    port: 3000 || process.env.PORT
-});
+const server = express();
 
 const init = async () => {
     //register all files in server init
@@ -24,11 +21,11 @@ const init = async () => {
     });
 
     //register init plugins
-    await server.register(plugins);
+    //await server.register(plugins);
 
     //start server
-    await server.start();
-    console.log(`Cortex Server running at: ${server.info.uri}`);
+    await server.listen(3000 || process.env.PORT, 'localhost' || process.env.HOST);
+    console.log(`Cortex Server running at: ${ 'localhost' || process.env.HOST}:${3000 || process.env.PORT}`);
 }
 
 process.on('unhandledRejection', (err) => {
