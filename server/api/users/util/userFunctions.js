@@ -14,7 +14,7 @@ const jwt = require('jsonwebtoken');
  * @param {Request} req 
  * @param {Handler} h 
  */
-async function verifyUniqueUser(req, res) {
+async function verifyUniqueUser(req, res, next) {
     try {
         let verified = await User.verifyUniqueUser(req.payload.username, req.payload.email);
         if (!verified.unique)

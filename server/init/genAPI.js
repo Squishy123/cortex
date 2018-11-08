@@ -7,7 +7,7 @@ const path = require('path');
 const genAPI = {
     name: 'genAPI',
     version: '0.0.1',
-    register: async function (server, options) {
+    register: async function (server) {
         //generate routes in API directory
         glob.sync('../api/**/routes/*.js', {
             cwd: __dirname

@@ -9,9 +9,17 @@ require('dotenv').config();
 //server conf
 const server = express();
 
+async function register(server, plugins) {
+    let loaded=[]
+    plugins.forEach((p) => {
+        loaded.push(plugins.register(server))
+    })
+    Promise.all(plugins.register())
+}
+
 const init = async () => {
     //register all files in server init
-    plugins = []
+    let plugins = []
     glob.sync('init/*.js', {
         cwd: __dirname
     }).forEach((file) => {
@@ -21,7 +29,7 @@ const init = async () => {
     });
 
     //register init plugins
-    //await server.register(plugins);
+    //await register(server, plugins);
 
     //start server
     await server.listen(3000 || process.env.PORT, 'localhost' || process.env.HOST);
