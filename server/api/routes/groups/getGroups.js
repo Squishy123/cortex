@@ -1,11 +1,8 @@
 const Boom = require('boom');
 
-const Group = require('../model/group');
+const Group = require('../../models/group');
 
-const mongoose = require('mongoose');
-
-const verifyAccessToken = require('../../users/util/userFunctions').verifyAccessToken;
-
+const verifyAccessToken = require('../../middle/userFunctions').verifyAccessToken;
 
 //list a user's groups
 module.exports = {

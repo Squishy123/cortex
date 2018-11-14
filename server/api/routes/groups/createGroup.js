@@ -1,8 +1,8 @@
 const Boom = require('boom');
 
-const Group = require('../model/group');
+const Group = require('../../models/group');
 
-const verifyAccessToken = require('../../users/util/userFunctions').verifyAccessToken;
+const verifyAccessToken = require('../../middle/userFunctions').verifyAccessToken;
 
 
 ///create a new group for a user

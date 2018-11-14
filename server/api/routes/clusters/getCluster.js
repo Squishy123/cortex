@@ -1,12 +1,12 @@
 const Boom = require('boom');
 
-const Cluster = require('../model/cluster');
+const Cluster = require('../../models/cluster');
 
 const mongoose = require('mongoose');
 
-const verifyAccessToken = require('../../users/util/userFunctions').verifyAccessToken;
+const verifyAccessToken = require('../../middle/userFunctions').verifyAccessToken;
 
-const verifyGroupAccess = require('../../groups/util/groupFunctions').verifyGroupAccess;
+const verifyGroupAccess = require('../../middle/groupFunctions').verifyGroupAccess;
 
 module.exports = {
     method: 'GET',

@@ -1,10 +1,10 @@
 const Boom = require('boom');
 
-const User = require('../model/user');
+const User = require('../../models/user');
 
-const createUserSchema = require('../schemas/createUser');
+const createUserSchema = require('../../util/schemas/createUser');
 
-const verifyUniqueUser = require('../util/userFunctions').verifyUniqueUser;
+const verifyUniqueUser = require('../../middle/userFunctions').verifyUniqueUser;
 
 //Create a new user route
 //req: username: required, email: required, password: required

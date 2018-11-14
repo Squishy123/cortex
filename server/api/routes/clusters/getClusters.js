@@ -1,12 +1,12 @@
 const Boom = require('boom');
 
-const Cluster = require('../model/cluster');
+const Cluster = require('../../models/cluster');
 
 const mongoose = require('mongoose');
 
-const verifyAccessToken = require('../../users/util/userFunctions').verifyAccessToken;
-const verifyGroupAccess = require('../../groups/util/groupFunctions').verifyGroupAccess;
+const verifyAccessToken = require('../../middle/userFunctions').verifyAccessToken;
 
+const verifyGroupAccess = require('../../middle/groupFunctions').verifyGroupAccess;
 
 //list a user's groups
 module.exports = {

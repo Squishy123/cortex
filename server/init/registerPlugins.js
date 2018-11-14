@@ -1,8 +1,11 @@
+//colors
+const colors = require('colors/safe');
+
 module.exports = async function register(server, plugins) {
     let loaded = []
     plugins.forEach((p) => {
         loaded.push(p.config().then(() => {
-            console.log(`${p.name}: ${p.success}`);
+            console.log(`${colors.cyan(p.name)}: ${colors.verbose(p.success)}`);
         }));
     });
     return await Promise.all(loaded);

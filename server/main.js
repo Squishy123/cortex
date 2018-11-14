@@ -4,6 +4,18 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 
+//colors
+const colors = require('colors/safe');
+
+colors.setTheme({
+    error: 'red',
+    alert: 'yellow',
+    data: 'white',
+    verbose: 'green',
+    wild: ['cyan', 'bgBlack'],
+    sys: 'cyan'
+});
+
 //env vars
 require('dotenv').config();
 
@@ -21,7 +33,7 @@ const init = async () => {
         cwd: __dirname
     }).forEach((file) => {
         const plugin = require(path.join(__dirname, file));
-        console.log(`Loaded: ${file}`)
+        console.log(`${colors.sys(file)} : loaded`);
         plugins.push(plugin);
     });
 
@@ -30,7 +42,7 @@ const init = async () => {
 
     //start server
     await server.listen(3000 || process.env.PORT, 'localhost' || process.env.HOST);
-    console.log(`Cortex Server running at: ${'localhost' || process.env.HOST}:${3000 || process.env.PORT}`);
+    console.log(colors.sys(`Cortex Server running at: ${colors.verbose(`${'localhost' || process.env.HOST}:${3000 || process.env.PORT}`)}`));
 
     //body parser
     server.use(bodyParser.json());

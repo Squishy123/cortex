@@ -1,10 +1,10 @@
 const Boom = require('boom');
 
 //default createUser schema
-const authenticateUserSchema = require('../schemas/authenticateUser');
+const authenticateUserSchema = require('../../util/schemas/authenticateUser');
 
 //unique user verification
-const verifyCredentials = require('../util/userFunctions').verifyCredentials;
+const verifyCredentials = require('../../middle//userFunctions').verifyCredentials;
 
 //authenticate a user
 //reqs: username: required, email: required, password: required

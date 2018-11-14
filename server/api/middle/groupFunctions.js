@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt');
 
 const mongoose = require('mongoose');
 
-const Group = require('../model/group');
+const Group = require('../models/group');
 
-const User =- require('../../users/model/user');
+const User =- require('../models/user');
 
 const jwt = require('jsonwebtoken');
 
