@@ -15,7 +15,7 @@ module.exports = {
         auth: false,
         //verify user is unique before passing to handler
         pre: [{ method: verifyUniqueUser }],
-        handler: async (req, h) => {
+        handler: async (req, res, next) => {
             try {
                 let user = new User();
                 user.email = req.payload.email;
@@ -24,7 +24,7 @@ module.exports = {
                 await user.addHashedPassword(req.payload.password);
                 
                 await user.save();
-                return user;
+                return res.send(user);
             } catch (err) {
                 return Boom.badRequest(err);
             }

@@ -2,6 +2,7 @@
 const glob = require('glob');
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 
 //env vars
 require('dotenv').config();
@@ -9,18 +10,14 @@ require('dotenv').config();
 //server conf
 const server = express();
 
-async function register(server, plugins) {
-    let loaded=[]
-    plugins.forEach((p) => {
-        loaded.push(plugins.register(server))
-    })
-    Promise.all(plugins.register())
-}
+//register plugins
+const registerPlugins = require('./init/registerPlugins');
+
 
 const init = async () => {
     //register all files in server init
     let plugins = []
-    glob.sync('init/*.js', {
+    glob.sync('plugins/*.js', {
         cwd: __dirname
     }).forEach((file) => {
         const plugin = require(path.join(__dirname, file));
@@ -29,15 +26,19 @@ const init = async () => {
     });
 
     //register init plugins
-    //await register(server, plugins);
+    await registerPlugins(server, plugins);
 
     //start server
     await server.listen(3000 || process.env.PORT, 'localhost' || process.env.HOST);
-    console.log(`Cortex Server running at: ${ 'localhost' || process.env.HOST}:${3000 || process.env.PORT}`);
+    console.log(`Cortex Server running at: ${'localhost' || process.env.HOST}:${3000 || process.env.PORT}`);
+
+    //body parser
+    server.use(bodyParser.json());
+    server.use(bodyParser.urlencoded({ extended: true }));
 
     //tester routes
-    const status = require('./api/server/routes/status');
-    server.use(status.path, status.router);
+    const status = require('./api/routes/server/status');
+    server.use(status.path, status.handler);
 }
 
 init();

@@ -32,15 +32,15 @@ async function verifyUniqueUser(req, res, next) {
  * @param {Request} req 
  * @param {Handler} h 
  */
-async function verifyCredentials(req, h) {
+async function verifyCredentials(req, res, next) {
     try {
         let verified = await User.verifyCredentials(req.payload.username, req.payload.email, req.payload.password);
         if (!verified.credentials)
-            return Boom.badRequest(verified.message);
+            next(Boom.badRequest(verified.message));
 
-        return verified.user;
+        next(verified.user);
     } catch (err) {
-        return Boom.badRequest(err);
+        next(Boom.badRequest(err));
     }
 }
 

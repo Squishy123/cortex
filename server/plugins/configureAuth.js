@@ -16,7 +16,7 @@ const configureAuth = {
     name: 'configureAuth',
     version: '0.0.1',
     //register auth jwt2
-    register: async function(server) {
+    config: async function(server) {
         try {
             await server.register(require('hapi-auth-jwt2'));
              //jwt security scheme
@@ -31,7 +31,8 @@ const configureAuth = {
         } catch (err) {
             return err;
         }
-    }
+    },
+    success: "Auth Configured!"
 }
 
 module.exports = configureAuth;
