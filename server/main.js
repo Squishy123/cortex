@@ -27,6 +27,10 @@ const registerPlugins = require('./init/registerPlugins');
 
 
 const init = async () => {
+    //body parser
+    server.use(bodyParser.json());
+    server.use(bodyParser.urlencoded({ extended: true }));
+
     //register all files in server init
     let plugins = []
     glob.sync('plugins/*.js', {
@@ -43,14 +47,6 @@ const init = async () => {
     //start server
     await server.listen(3000 || process.env.PORT, 'localhost' || process.env.HOST);
     console.log(colors.sys(`Cortex Server running at: ${colors.verbose(`${'localhost' || process.env.HOST}:${3000 || process.env.PORT}`)}`));
-
-    //body parser
-    server.use(bodyParser.json());
-    server.use(bodyParser.urlencoded({ extended: true }));
-
-    //tester routes
-    const status = require('./api/routes/server/status');
-    server.use(status.path, status.handler);
 }
 
 init();

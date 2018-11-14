@@ -17,18 +17,14 @@ const genAPI = {
         }).forEach((file) => {
             const route = require(path.join(__dirname, file));
             console.log(colors.data(`${colors.alert(route.method)}: ${colors.verbose(route.path)} generated!`));
-            try {
-                if (route.path === 'GET') {
-                    server.get(route.path, route.handler);
-                } else if (route.path === 'PUT') {
-                    server.put(route.path, route.handler);
-                } else if (route.path === 'POST') {
-                    server.post(route.path, route.handler);
-                } else if (route.path === 'DELETE') {
-                    server.delete(route.path, route.handler);
-                }
-            } catch (err) {
-                console.log(err);
+            if (route.method === 'GET') {
+                server.get(route.path, (route.handler) ? route.handler : route.config.handler);
+            } else if (route.method === 'PUT') {
+                server.put(route.path, (route.handler) ? route.handler : route.config.handler);
+            } else if (route.method === 'POST') {
+                server.post(route.path, (route.handler) ? route.handler : route.config.handler);
+            } else if (route.method === 'DELETE') {
+                server.delete(route.path, (route.handler) ? route.handler : route.config.handler);
             }
         });
     },

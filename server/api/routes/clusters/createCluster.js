@@ -11,7 +11,6 @@ const verifyGroupAccess = require('../../middle/groupFunctions').verifyGroupAcce
 module.exports = {
     method: 'POST',
     path: '/api/clusters',
-    gen: true,
     pre: [{ method: verifyAccessToken, assign: 'user' }, { method: verifyGroupAccess, assign: 'group' }],
     handler: async (req, h) => {
         try {
