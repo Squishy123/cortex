@@ -7,6 +7,9 @@ const path = require('path');
 //colors
 const colors = require('colors/safe');
 
+//wrap middleware
+const wrap = require('../api/middle/wrap');
+
 const genAPI = {
     name: 'genAPI',
     version: '0.0.1',
@@ -18,13 +21,13 @@ const genAPI = {
             const route = require(path.join(__dirname, file));
             console.log(colors.data(`${colors.alert(route.method)}: ${colors.verbose(route.path)} generated!`));
             if (route.method === 'GET') {
-                server.get(route.path, (route.handler) ? route.handler : route.config.handler);
+                server.get(route.path, (route.handler) ? wrap(route.handler) : wrap(route.config.handler));
             } else if (route.method === 'PUT') {
-                server.put(route.path, (route.handler) ? route.handler : route.config.handler);
+                server.put(route.path, (route.handler) ? wrap(route.handler) : wrap(route.config.handler));
             } else if (route.method === 'POST') {
-                server.post(route.path, (route.handler) ? route.handler : route.config.handler);
+                server.post(route.path, (route.handler) ? wrap(route.handler) : wrap(route.config.handler));
             } else if (route.method === 'DELETE') {
-                server.delete(route.path, (route.handler) ? route.handler : route.config.handler);
+                server.delete(route.path, (route.handler) ? wrap(route.handler) : wrap(route.config.handler));
             }
         });
     },
