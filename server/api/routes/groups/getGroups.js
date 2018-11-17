@@ -9,7 +9,7 @@ module.exports = {
     method: 'GET',
     path: '/api/groups',
     config: {
-        pre: [{ method: verifyAccessToken , assign: 'user'}],
+        pre: [verifyAccessToken],
         handler: async(req, h) => {
             try  {
                 let groups = await Group.find({"users.user_id": req.pre.user._id});

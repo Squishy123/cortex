@@ -9,7 +9,7 @@ module.exports = {
     method: 'GET',
     path: '/api/group',
     config: {
-        pre: [{ method: verifyAccessToken, assign: 'user' }, { method: verifyGroupAccess, assign: 'group' }],
+        pre: [verifyAccessToken, verifyGroupAccess],
         handler: async (req, h) => {
             try {
                 return req.pre.group;

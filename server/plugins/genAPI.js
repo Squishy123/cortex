@@ -20,14 +20,26 @@ const genAPI = {
         }).forEach((file) => {
             const route = require(path.join(__dirname, file));
             console.log(colors.data(`${colors.alert(route.method)}: ${colors.verbose(route.path)} generated!`));
+            //wrap all middleware in async wrapper
+            let handler = (route.handler) ? wrap(route.handler) : wrap(route.config.handler);
+            let pre = (route.pre) ? route.pre.map(middle => wrap(middle)) : null;
+            let params = [route.path];
+            
+            //check if pre is null
+            if(pre) {
+                params = params.concat(pre);
+            }
+
+            params.push(handler);
+
             if (route.method === 'GET') {
-                server.get(route.path, (route.handler) ? wrap(route.handler) : wrap(route.config.handler));
+                server.get(...params);
             } else if (route.method === 'PUT') {
-                server.put(route.path, (route.handler) ? wrap(route.handler) : wrap(route.config.handler));
+                server.put(...params);
             } else if (route.method === 'POST') {
-                server.post(route.path, (route.handler) ? wrap(route.handler) : wrap(route.config.handler));
+                server.post(...params);
             } else if (route.method === 'DELETE') {
-                server.delete(route.path, (route.handler) ? wrap(route.handler) : wrap(route.config.handler));
+                server.delete(...params);
             }
         });
     },

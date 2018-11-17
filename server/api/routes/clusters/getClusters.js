@@ -13,7 +13,7 @@ module.exports = {
     method: 'GET',
     path: '/api/clusters',
     config: {
-        pre: [{ method: verifyAccessToken , assign: 'user'}, { method: verifyGroupAccess, assign: 'group' }],
+        pre: [verifyAccessToken, verifyGroupAccess],
         handler: async(req, h) => {
             try  {
                 let clusters = await Cluster.find({"group_id": mongoose.Types.ObjectId(req.headers.group_id)});

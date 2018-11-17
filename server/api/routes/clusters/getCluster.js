@@ -12,7 +12,7 @@ module.exports = {
     method: 'GET',
     path: '/api/cluster',
     config: {
-        pre: [{ method: verifyAccessToken, assign: 'user' }, { method: verifyGroupAccess, assign: 'group' }],
+        pre: [verifyAccessToken, verifyGroupAccess],
         handler: async (req, h) => {
             try {
                 let cluster = await Cluster.findOne({ _id: req.headers.cluster_id });

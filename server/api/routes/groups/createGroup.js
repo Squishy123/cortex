@@ -10,7 +10,7 @@ module.exports = {
     method: 'POST',
     path: '/api/groups',
     config: {
-        pre: [{ method: verifyAccessToken, assign: 'user' }],
+        pre: [verifyAccessToken],
         handler: async (req, h) => {
             try {
                 let group = new Group();

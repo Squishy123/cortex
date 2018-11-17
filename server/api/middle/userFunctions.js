@@ -10,20 +10,22 @@ const jwt = require('jsonwebtoken');
 
 /**
  * Checks to see if a user is unique
- * if yes return the user, if not return error
+ * if yes set res.locals.user to user, else send error
  * @param {Request} req 
- * @param {Handler} h 
+ * @param {Result} res
+ * @param {Callback} next
  */
 async function verifyUniqueUser(req, res, next) {
     try {
-        let verified = await User.verifyUniqueUser(req.payload.username, req.payload.email);
+        let verified = await User.verifyUniqueUser(req.body.username, req.body.email);
         if (!verified.unique)
             return res.send(Boom.badRequest(verified.message));
-
-        return res.send(verified.user);
+        
+        res.locals.user = verified.user;
     } catch (err) {
         return res.send(Boom.badRequest(err));
     }
+    next();
 }
 
 /**
@@ -36,7 +38,7 @@ async function verifyCredentials(req, res, next) {
     try {
         let verified = await User.verifyCredentials(req.payload.username, req.payload.email, req.payload.password);
         if (!verified.credentials)
-            next(Boom.badRequest(verified.message));
+            (Boom.badRequest(verified.message));
 
         next(verified.user);
     } catch (err) {

@@ -28,8 +28,8 @@ const registerPlugins = require('./init/registerPlugins');
 
 const init = async () => {
     //body parser
-    server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: true }));
+    server.use(bodyParser.json());
 
     //register all files in server init
     let plugins = []

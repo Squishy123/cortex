@@ -13,8 +13,8 @@ module.exports = {
     path: '/api/users/authenticate',
     config: {
         //verify user credentials
-        pre: [{ method: verifyCredentials, assign: 'user' }],
-        handler: async (req, h) => {
+        pre: [verifyCredentials],
+        handler: async (req, res, next) => {
             try {
                 let token = await req.pre.user.createAccessToken();
                 return { access_token: token };

@@ -13,19 +13,19 @@ module.exports = {
     path: '/api/users',
     auth: false,
     //verify user is unique before passing to handler
-    pre: [{ method: verifyUniqueUser }],
+    pre: [verifyUniqueUser],
     handler: async (req, res, next) => {
         try {
             let user = new User();
-            user.email = req.payload.email;
-            user.username = req.payload.username;
+            user.email = req.body.email;
+            user.username = req.body.username;
 
-            await user.addHashedPassword(req.payload.password);
+            await user.addHashedPassword(req.body.password);
 
             await user.save();
             return res.send(user);
         } catch (err) {
-            return Boom.badRequest(err);
+            return res.send(Boom.badRequest(err));
         }
     },
     //validate the payload against the Joi schema
