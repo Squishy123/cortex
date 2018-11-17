@@ -4,7 +4,7 @@ const Boom = require('boom');
 const authenticateUserSchema = require('../../util/schemas/authenticateUser');
 
 //unique user verification
-const verifyCredentials = require('../../middle//userFunctions').verifyCredentials;
+const verifyCredentials = require('../../middle/userFunctions').verifyCredentials;
 
 //authenticate a user
 //reqs: username: required, email: required, password: required
@@ -14,12 +14,13 @@ module.exports = {
     config: {
         //verify user credentials
         pre: [verifyCredentials],
-        handler: async (req, res, next) => {
+        handler: async (req, res) => {
             try {
-                let token = await req.pre.user.createAccessToken();
-                return { access_token: token };
+                await verifyCredentials(req, res);
+                let token = await res.locals.user.createAccessToken();
+                return res.send({ access_token: token });
             } catch (err) {
-                Boom.badRequest(err);
+                return res.send(Boom.badRequest(err));
             }
         },
 

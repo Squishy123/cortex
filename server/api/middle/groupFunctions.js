@@ -18,7 +18,7 @@ const jwt = require('jsonwebtoken');
  */
 async function verifyShareToken(req, h) {
     try  {
-        let verified = await Group.verifyShareToken(req.payload.share_token, process.env.SECRET);
+        let verified = await Group.verifyShareToken(req.body.share_token, process.env.SECRET);
         if (!verified.group) 
             return Boom.badRequest(verified.message);
         
@@ -31,7 +31,7 @@ async function verifyShareToken(req, h) {
 async function verifyGroupAccess(req, h) {
     try {
         let user = req.pre.user;
-        let group = await Group.findOne({_id: mongoose.Types.ObjectId((req.headers.group_id) ? req.headers.group_id : req.payload.group_id)});
+        let group = await Group.findOne({_id: mongoose.Types.ObjectId((req.headers.group_id) ? req.headers.group_id : req.body.group_id)});
 
         if(!group)
             return Boom.badRequest("Invalid group_id");

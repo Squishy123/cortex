@@ -34,15 +34,16 @@ async function verifyUniqueUser(req, res, next) {
  * @param {Request} req 
  * @param {Handler} h 
  */
-async function verifyCredentials(req, res, next) {
+async function verifyCredentials(req, res) {
     try {
-        let verified = await User.verifyCredentials(req.payload.username, req.payload.email, req.payload.password);
+        let verified = await User.verifyCredentials(req.body.username, req.body.email, req.body.password);
         if (!verified.credentials)
-            (Boom.badRequest(verified.message));
-
-        next(verified.user);
+            return res.send(Boom.badRequest(verified.message));
+            
+         res.locals.user  = verified.user;
+         return;
     } catch (err) {
-        next(Boom.badRequest(err));
+        return res.send(Boom.badRequest(err));
     }
 }
 

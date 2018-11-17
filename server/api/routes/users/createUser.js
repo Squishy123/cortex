@@ -14,7 +14,7 @@ module.exports = {
     auth: false,
     //verify user is unique before passing to handler
     pre: [verifyUniqueUser],
-    handler: async (req, res, next) => {
+    handler: async (req, res) => {
         try {
             let user = new User();
             user.email = req.body.email;

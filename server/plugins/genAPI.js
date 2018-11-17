@@ -24,13 +24,14 @@ const genAPI = {
             let handler = (route.handler) ? wrap(route.handler) : wrap(route.config.handler);
             let pre = (route.pre) ? route.pre.map(middle => wrap(middle)) : null;
             let params = [route.path];
-            
+            params.push(handler);
+
             //check if pre is null
-            if(pre) {
-                params = params.concat(pre);
+            if (pre) {
+                //    params = params.concat(pre);
+                server.use(route.path, pre);
             }
 
-            params.push(handler);
 
             if (route.method === 'GET') {
                 server.get(...params);
