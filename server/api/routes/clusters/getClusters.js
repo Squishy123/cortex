@@ -14,14 +14,16 @@ module.exports = {
     path: '/api/clusters',
     config: {
         pre: [verifyAccessToken, verifyGroupAccess],
-        handler: async(req, h) => {
+        handler: async(req, res) => {
+            await verifyAccessToken(req, res);
+            await verifyGroupAccess(req, res);
             try  {
                 let clusters = await Cluster.find({"group_id": mongoose.Types.ObjectId(req.headers.group_id)});
                 if(!clusters)
-                    return Boom.badRequest("Group has no clusters");
-                return clusters;
+                    return res.send(Boom.badRequest("Group has no clusters"));
+                return res.send(clusters);
             } catch(err) {
-                return Boom.badRequest(err);
+                return res.send(Boom.badRequest(err));
             }
         }
     }

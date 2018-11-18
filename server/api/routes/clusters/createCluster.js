@@ -12,20 +12,22 @@ module.exports = {
     method: 'POST',
     path: '/api/clusters',
     pre: [verifyAccessToken, verifyGroupAccess],
-    handler: async (req, h) => {
+    handler: async (req, res) => {
+        await verifyAccessToken(req, res);
+        await verifyGroupAccess(req, res);
         try {
             let cluster = new Cluster();
-            cluster.name = req.payload.name;
-            cluster.description = req.payload.description;
-            cluster.group_id = mongoose.Types.ObjectId(req.payload.group_id);
+            cluster.name = req.body.name;
+            cluster.description = req.body.description;
+            cluster.group_id = mongoose.Types.ObjectId(req.body.group_id);
             await cluster.createAPIToken();
             await cluster.save();
-            req.pre.group.clusters.push({ cluster_id: cluster._id });
-            await req.pre.group.save();
+            res.locals.group.clusters.push({ cluster_id: cluster._id });
+            await res.locals.group.save();
 
-            return cluster;
+            return res.send(cluster);
         } catch (err) {
-            return Boom.badRequest(err);
+            return res.send(Boom.badRequest(err));
         }
     }
 }

@@ -13,15 +13,17 @@ module.exports = {
     path: '/api/cluster',
     config: {
         pre: [verifyAccessToken, verifyGroupAccess],
-        handler: async (req, h) => {
+        handler: async (req, res) => {
+            await verifyAccessToken(req, res);
+            await verifyGroupAccess(req, res);
             try {
                 let cluster = await Cluster.findOne({ _id: req.headers.cluster_id });
                 if(!cluster)
-                    return Boom.badRequest("Invalid cluster_id");
+                    return res.send(Boom.badRequest("Invalid cluster_id"));
                 
-                return cluster;
+                return res.send(cluster);
             } catch (err) {
-                return Boom.badRequest(err);
+                return res.send(Boom.badRequest(err));
             }
         }
     }
