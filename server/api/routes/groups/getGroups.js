@@ -10,14 +10,14 @@ module.exports = {
     path: '/api/groups',
     config: {
         pre: [verifyAccessToken],
-        handler: async(req, h) => {
+        handler: async(req, res) => {
+            await verifyAccessToken(req, res);
             try  {
-                let groups = await Group.find({"users.user_id": req.pre.user._id});
-                if(!groups)
-                    return Boom.badRequest("User is not part of any group")
-                return groups;
+                let groups = await Group.find({"users.user_id": res.locals.user._id});
+        
+                return res.send(groups);
             } catch(err) {
-                return Boom.badRequest(err);
+                return res.send(Boom.badRequest(err));
             }
         }
     }
