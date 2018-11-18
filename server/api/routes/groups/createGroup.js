@@ -11,23 +11,24 @@ module.exports = {
     path: '/api/groups',
     config: {
         pre: [verifyAccessToken],
-        handler: async (req, h) => {
+        handler: async (req, res) => {
+            await verifyAccessToken(req, res);
             try {
                 let group = new Group();
-                group.name = req.payload.name;
-                group.description = req.payload.description;
+                group.name = req.body.name;
+                group.description = req.body.description;
                 group.secret_id = Math.random().toString(36).slice(2);
-                group.users.push({ user_id: req.pre.user._id, scopes: ["owner", "edit", "view"] });
-
-                req.pre.user.groups.push({ group_id: group._id, scopes: ["owner", "edit", "view"] });
-                await req.pre.user.save();
+                group.users.push({ user_id: res.locals.user._id, scopes: ["owner", "edit", "view"] });
+                res.locals.user.groups.push({ group_id: group._id, scopes: ["owner", "edit", "view"] });
+                await res.locals.user.save();
 
                 await group.save();
 
-                return group;
+                return res.send(group);
             } catch (err) {
-                return Boom.badRequest(err);
+                return res.send(Boom.badRequest(err));
             }
         }
     }
 }
+

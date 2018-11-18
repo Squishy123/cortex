@@ -29,9 +29,9 @@ const genAPI = {
             //check if pre is null
             if (pre) {
                 //    params = params.concat(pre);
-                server.use(route.path, pre);
+                //disabling pre because of scoped data issue
+                //server.use(route.path, pre);
             }
-
 
             if (route.method === 'GET') {
                 server.get(...params);

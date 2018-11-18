@@ -20,50 +20,53 @@ async function verifyUniqueUser(req, res, next) {
         let verified = await User.verifyUniqueUser(req.body.username, req.body.email);
         if (!verified.unique)
             return res.send(Boom.badRequest(verified.message));
-        
         res.locals.user = verified.user;
     } catch (err) {
         return res.send(Boom.badRequest(err));
     }
-    next();
+    if (next)
+        next();
 }
 
 /**
  * Checks to see if a user's credentials are correct
- * if yes return the user, if not return error
- * @param {Request} req 
- * @param {Handler} h 
+ * if yes return the user, if not send error
+* @param {Request} req 
+ * @param {Result} res
+ * @param {Callback} next
  */
-async function verifyCredentials(req, res) {
+async function verifyCredentials(req, res, next) {
     try {
         let verified = await User.verifyCredentials(req.body.username, req.body.email, req.body.password);
         if (!verified.credentials)
             return res.send(Boom.badRequest(verified.message));
-            
-         res.locals.user  = verified.user;
-         return;
+        res.locals.user = verified.user;
     } catch (err) {
         return res.send(Boom.badRequest(err));
     }
+    if (next)
+        next();
 }
 
 /**
  * Checks to see if a user's access token is valid
- * If yes return the user, if not return error
- * @param {Request} req 
- * @param {Handler} h 
+ * If yes return the user, if not send error
+* @param {Request} req 
+ * @param {Result} res
+ * @param {Callback} next
  */
-async function verifyAccessToken(req, h) {
+async function verifyAccessToken(req, res, next) {
     try {
         let verified = await User.verifyAccessToken(req.headers.access_token);
         if (!verified.access_token)
-            return Boom.badRequest(verified.message)
-
-        return verified.user;
-
+            return res.send(Boom.badRequest(verified.message));
+         res.locals.user = verified.user;
     } catch (err) {
-        return Boom.badRequest(err);
+        return res.send(Boom.badRequest(err));
     }
+
+    if (next)
+        next();
 }
 
 module.exports = {

@@ -16,6 +16,7 @@ module.exports = {
     pre: [verifyUniqueUser],
     handler: async (req, res) => {
         try {
+            await verifyUniqueUser(req, res);
             let user = new User();
             user.email = req.body.email;
             user.username = req.body.username;
