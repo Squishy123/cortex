@@ -10,11 +10,13 @@ module.exports = {
     path: '/api/group',
     config: {
         pre: [verifyAccessToken, verifyGroupAccess],
-        handler: async (req, h) => {
+        handler: async (req, res) => {
+            await verifyAccessToken(req, res);
+            await verifyGroupAccess(req, res);
             try {
-                return req.pre.group;
+                return res.send(res.locals.group);
             } catch (err) {
-                return Boom.badRequest(err);
+                return res.send(Boom.badRequest(err));
             }
         }
     }
