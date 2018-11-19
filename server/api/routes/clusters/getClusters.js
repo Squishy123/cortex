@@ -15,9 +15,9 @@ module.exports = {
     config: {
         pre: [verifyAccessToken, verifyGroupAccess],
         handler: async(req, res) => {
-            await verifyAccessToken(req, res);
-            await verifyGroupAccess(req, res);
             try  {
+                await verifyAccessToken(req, res);
+                await verifyGroupAccess(req, res);
                 let clusters = await Cluster.find({"group_id": mongoose.Types.ObjectId(req.headers.group_id)});
                 if(!clusters)
                     return res.send(Boom.badRequest("Group has no clusters"));

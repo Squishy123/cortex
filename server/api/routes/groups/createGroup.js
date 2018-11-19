@@ -12,8 +12,8 @@ module.exports = {
     config: {
         pre: [verifyAccessToken],
         handler: async (req, res) => {
-            await verifyAccessToken(req, res);
             try {
+                await verifyAccessToken(req, res);
                 let group = new Group();
                 group.name = req.body.name;
                 group.description = req.body.description;

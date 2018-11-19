@@ -16,7 +16,7 @@ const clusterModel = new mongoose.Schema({
  */
 clusterModel.methods.createAPIToken = async function() {
     try {
-        this.api_token = Math.random().toString(36).slice(2);
+        this.api_token = [...Array(36)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
         await this.save();
         
         return {cluster: cluster, api_token: this.api_token, message: "Success"};

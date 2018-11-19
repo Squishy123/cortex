@@ -6,7 +6,8 @@ const nodeModel = new mongoose.Schema({
     description: {type: String},
     cluster_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Cluster'},
     current_meta: {type: mongoose.Schema.Types.ObjectId, ref: 'Meta'},
-    historical_meta: [{meta_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Meta'}}]
+    historical_meta: [{meta_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Meta'}}],
+    api_token: {type: String}
 });
 
 nodeModel.methods.addMeta = async function(meta) {
@@ -22,4 +23,4 @@ nodeModel.methods.addMeta = async function(meta) {
 
 
 
-module.exports = nodeModel;
+module.exports =  mongoose.model('Node', nodeModel);;
