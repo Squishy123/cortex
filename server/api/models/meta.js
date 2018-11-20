@@ -8,3 +8,5 @@ const metaModel = new mongoose.Schema({
     created_at: {type: Date, default: Date.now}
 });
 
+
+module.exports =  mongoose.model('Meta', metaModel);
