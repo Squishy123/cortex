@@ -23,4 +23,4 @@ nodeModel.methods.addMeta = async function(meta) {
 
 
 
-module.exports =  mongoose.model('Node', nodeModel);;
+module.exports =  mongoose.model('Node', nodeModel);
