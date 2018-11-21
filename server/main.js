@@ -3,6 +3,7 @@ const glob = require('glob');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 //colors
 const colors = require('colors/safe');
@@ -40,6 +41,9 @@ const init = async () => {
         console.log(`${colors.sys(file)} : loaded`);
         plugins.push(plugin);
     });
+
+    //enable cors
+    server.options('*', cors());
 
     //register init plugins
     await registerPlugins(server, plugins);
