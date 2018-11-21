@@ -10,6 +10,9 @@ const colors = require('colors/safe');
 //wrap middleware
 const wrap = require('../api/middle/wrap');
 
+//cors
+const cors = require('cors');
+
 const genAPI = {
     name: 'genAPI',
     version: '0.0.1',
@@ -23,7 +26,7 @@ const genAPI = {
             //wrap all middleware in async wrapper
             let handler = (route.handler) ? wrap(route.handler) : wrap(route.config.handler);
             let pre = (route.pre) ? route.pre.map(middle => wrap(middle)) : null;
-            let params = [route.path];
+            let params = [route.path, cors()];
             params.push(handler);
 
             //check if pre is null
