@@ -49,7 +49,7 @@ const init = async () => {
     await registerPlugins(server, plugins);
 
     //start server
-    await server.listen(3000 || process.env.PORT, 'localhost' || process.env.HOST);
+    await server.listen(process.env.PORT || 3000, process.env.HOST || 'localhost');
     console.log(colors.sys(`Cortex Server running at: ${colors.verbose(`${'localhost' || process.env.HOST}:${3000 || process.env.PORT}`)}`));
 }
 
