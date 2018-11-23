@@ -14,7 +14,8 @@ module.exports = {
         try {
             await verifyAPIToken(req, res);
             await verifyNodeToken(req, res);
-            console.log(res.locals);
+            //console.log(res.locals);
+            console.log(req.body);
 
             let meta = new Meta();
 
@@ -25,7 +26,6 @@ module.exports = {
             res.locals.node.addMeta(meta);
 
             return res.send(meta);
-
         } catch(err) {
             return res.send(Boom.badRequest(err));
         }

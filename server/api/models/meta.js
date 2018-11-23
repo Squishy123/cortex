@@ -5,7 +5,7 @@ const metaModel = new mongoose.Schema({
     reading_name: {type: String},
     reading_value: {type: String},
     unit: {type: String},
-    created_at: {type: Date, default: Date.now}
+    created_at: {type: String}
 });
 
 
