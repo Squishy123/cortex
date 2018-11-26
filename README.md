@@ -2,10 +2,10 @@
 ![version](https://img.shields.io/badge/version-0.0.1-brightgreen.svg?style=flat-square) ![docs](https://img.shields.io/badge/docs-coming%20soon-orange.svg?style=flat-square)
 
 - [Cortex](#cortex)
-        - [Description](#description)
-        - [API Docs](#api-docs)
-        - [Project Structure](#project-structure)
-        - [Default Environment Variable Values:](#default-environment-variable-values)
+                - [Description](#description)
+                - [API Docs](#api-docs)
+                - [Project Structure](#project-structure)
+                - [Default Environment Variable Values:](#default-environment-variable-values)
 
 ### Description
 Cortex is an IoT stack developed for the purpose of being easily used and integrated.
@@ -31,4 +31,3 @@ server/api/util/ | helper functions
 DB_URL=mongodb://localhost:27017
 SECRET=1234
 ```
-
