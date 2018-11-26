@@ -1,39 +1,56 @@
 //imports
 const glob = require('glob');
-const Hapi = require('hapi');
+const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+//colors
+const colors = require('colors/safe');
+
+colors.setTheme({
+    error: 'red',
+    alert: 'yellow',
+    data: 'white',
+    verbose: 'green',
+    wild: ['cyan', 'bgBlack'],
+    sys: 'cyan'
+});
 
 //env vars
 require('dotenv').config();
 
 //server conf
-const server = Hapi.Server({
-    host: 'localhost' || process.env.HOST,
-    port: 3000 || process.env.PORT
-});
+const server = express();
+
+//register plugins
+const registerPlugins = require('./init/registerPlugins');
+
 
 const init = async () => {
+    //body parser
+    server.use(bodyParser.urlencoded({ extended: true }));
+    server.use(bodyParser.json());
+
     //register all files in server init
-    plugins = []
-    glob.sync('init/*.js', {
+    let plugins = []
+    glob.sync('plugins/*.js', {
         cwd: __dirname
     }).forEach((file) => {
         const plugin = require(path.join(__dirname, file));
-        console.log(`Loaded: ${file}`)
+        console.log(`${colors.sys(file)} : loaded`);
         plugins.push(plugin);
     });
 
+    //enable cors
+    server.options('*', cors());
+
     //register init plugins
-    await server.register(plugins);
+    await registerPlugins(server, plugins);
 
     //start server
-    await server.start();
-    console.log(`Cortex Server running at: ${server.info.uri}`);
+    await server.listen(process.env.PORT || 3000, process.env.HOST || 'localhost');
+    console.log(colors.sys(`Cortex Server running at: ${colors.verbose(`${'localhost' || process.env.HOST}:${3000 || process.env.PORT}`)}`));
 }
-
-process.on('unhandledRejection', (err) => {
-    console.log(err);
-    process.exit(1);
-});
 
 init();
