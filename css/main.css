@@ -1,12 +1,18 @@
+* {
+    font-family: 'Source Sans Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body {
-  background-color: white;
+    background: #485563;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #29323c, #485563);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #29323c, #485563); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .centered-container {
     position: relative;
-    top: 0%;
+    top: 15%;
     left: 50%;
-    transform: translate(-50%, 0%);
+    transform: translate(-50%, 15%);
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -21,5 +27,52 @@ body {
 
 .main-panel {
     margin: auto;
+    text-align: center;
+    color: white;
+}
+
+.title {
+    font-size: 75px;
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 24px;
+    margin: 0;
+}
+
+.grey {
+    color:#99bfdf;
+
+}
+
+.light {
+    font-weight: 100;
+}
+
+.bold {
+    font-weight: 900;
+}
+
+.button {
+    font-size: 20px;
     color: black;
+    font-weight: 500;
+    border-radius: 5px;
+    display: block;
+    width: 150px;
+    height: 25px;
+    padding: 10px;
+    text-decoration: none;
+    background-color: white;
+    margin: 20px auto 10px auto;
+
+    transition: 0.3s;
+}
+
+.button:hover {
+    background-color: #99bfdf;
+    color: white;
+
+    transition: 0.3s;
 }
