@@ -11,7 +11,7 @@
 Cortex is an IoT stack developed for the purpose of being easily used and integrated.
 
 ### API Docs
-Live preview available [here](https://www.getpostman.com/collections/8f56afd8f192d5bae800).
+Live preview available [here](https://documenter.getpostman.com/view/4171682/RzZ6L2CF).
 
 ### Project Structure
 
